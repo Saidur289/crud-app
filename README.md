@@ -1,50 +1,51 @@
-# Welcome to your Expo app 👋
+# React Native Task Manager (CRUD App)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A fully functional, elegantly designed Task Manager application built with React Native and Expo. This app demonstrates complete CRUD (Create, Read, Update, Delete) capabilities, local data persistence, and a beautiful UI with smooth animations.
 
-## Get started
+## 🚀 Features
 
-1. Install dependencies
+- **Full CRUD Functionality**: Add, view, edit, and delete tasks seamlessly.
+- **Local Data Persistence**: Tasks are saved locally on the device using `@react-native-async-storage/async-storage`, ensuring your data remains even after restarting the app.
+- **Dark/Light Theme Support**: Built-in theme toggling for a comfortable viewing experience in any lighting condition.
+- **Smooth Animations**: Engaging and responsive UI animations powered by `react-native-reanimated`.
+- **Toast Notifications**: Interactive feedback upon performing actions (e.g., adding, updating, or deleting a task).
 
+## 🛠️ Tech Stack
+
+- **Framework**: [React Native](https://reactnative.dev/) / [Expo](https://expo.dev/)
+- **Storage**: `@react-native-async-storage/async-storage`
+- **Animations**: `react-native-reanimated`
+
+## 📦 Installation & Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Saidur289/crud-app.git
+   cd crud-app
+   ```
+
+2. **Install dependencies:**
    ```bash
    npm install
    ```
 
-2. Start the app
-
+3. **Start the development server:**
    ```bash
-   npx expo start
+   npm run start
    ```
 
-In the output, you'll find options to open the app in a
+## 📱 Usage
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Tap the **Sun/Moon** icon in the top right to switch between light and dark themes.
+- Type in the input field and press **Add** to create a new task.
+- Press **Done** / **Undo** to mark a task as completed or active.
+- Press **Update** to edit the text of an existing task.
+- Press **Delete** to remove a task permanently.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🤝 Contributing
 
-## Get a fresh project
+Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
 
-When you're ready, run:
+## 📄 License
 
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project is open-source and available under the MIT License.
