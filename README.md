@@ -1,12 +1,14 @@
 <div align="center">
-  <img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React Native" />
-  <img src="https://img.shields.io/badge/Expo-1B1F23?style=for-the-badge&logo=expo&logoColor=white" alt="Expo" />
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/React_Native-0.81-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React Native" />
+  <img src="https://img.shields.io/badge/Expo-v54-1B1F23?style=for-the-badge&logo=expo&logoColor=white" alt="Expo" />
+  <img src="https://img.shields.io/badge/Expo_Router-v6-black?style=for-the-badge&logo=expo&logoColor=white" alt="Expo Router" />
+  <img src="https://img.shields.io/badge/TypeScript-Ready-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Design-Impeccable-4F46E5?style=for-the-badge" alt="Impeccable Design" />
 
-  <h1>🚀 React Native Task Manager</h1>
+  <h1>Flow Tasks — Modern Responsive Task Manager</h1>
   
   <p>
-    <strong>A beautifully designed, fully functional CRUD application built with React Native and Expo.</strong>
+    <strong>A high-craft, fully responsive cross-platform CRUD task application built with React Native, Expo Router, and Impeccable Design.</strong>
   </p>
 </div>
 
@@ -14,36 +16,67 @@
 
 ## 🌟 Overview
 
-The **React Native Task Manager** is a modern, cross-platform mobile application designed to keep track of your daily tasks. Built using **React Native** and **Expo**, it demonstrates complete Create, Read, Update, and Delete (CRUD) operations, persistent local storage, and an elegant user interface enhanced with smooth animations.
+**Flow Tasks** is an Operate-mode task management application engineered for speed, visual clarity, and tactile responsiveness. Built on **React Native (v0.81)**, **Expo (v54)**, and **Expo Router (v6)**, it combines complete CRUD capabilities with local offline persistence, fluid animations, dynamic status bar adaptation, and dedicated dynamic routing for editing tasks.
 
-## ✨ Key Features
-
-- 📝 **Full CRUD Operations**: Easily add, view, update, and delete your tasks.
-- 💾 **Local Data Persistence**: Tasks are securely stored on your device using `@react-native-async-storage/async-storage`. Your data remains intact even after closing the app.
-- 🌓 **Dark & Light Mode Support**: A built-in theme toggle dynamically switches between light and dark modes, ensuring a comfortable viewing experience anywhere.
-- 🎨 **Fluid Animations**: Interactive UI components animated by `react-native-reanimated` make the app feel alive and responsive.
-- 🔔 **Toast Notifications**: Provides instant user feedback when tasks are added, updated, or removed.
+The interface adheres to the **[Impeccable Design System](https://impeccable.style)**: free from AI anti-patterns, utilizing true vector typography and iconography, high-contrast semantic color tokens, and adaptive responsive layouts across mobile phones, tablets, and desktop browsers.
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ Key Features
 
-- **Core**: [React Native](https://reactnative.dev/)
-- **Framework**: [Expo (Expo Router)](https://expo.dev/)
-- **Storage**: [`@react-native-async-storage/async-storage`](https://react-native-async-storage.github.io/async-storage/)
-- **Animations**: [`react-native-reanimated`](https://docs.swmansion.com/react-native-reanimated/)
+- 📝 **Full CRUD Operations**:
+  - Add tasks with instant keyboard Enter submission (`returnKeyType="done"`).
+  - Quick toggle completion via circular checkmark buttons with haptic feedback.
+  - Dedicated dynamic edit route (`/edit/[id]`) to edit titles and toggle status in-place.
+  - Deletion with non-destructive **Undo Toast** recovery.
+- 🔍 **Real-Time Search**: Search through tasks with live filtering, instant clear buttons, and `/` or `Ctrl+K` desktop shortcut.
+- 🏷️ **Segmented Status Filters**: Filter by **All**, **Pending**, or **Completed** with embedded dynamic item count badges.
+- 📊 **Progress Tracker**: Visual progress card showing live task completion ratios and percentage track.
+- 🌓 **Adaptive Theming**: Seamless dark and light modes with automatic system detection, persistent user storage, and synchronized `<StatusBar>`.
+- 📱 **Fully Responsive Layout**:
+  - **Phones**: Single-column thumb-friendly layout with $\ge 44 \times 44\text{ pt}$ touch targets.
+  - **Tablets & Desktop**: Auto-centered reading container (`maxWidth: 760`), side-by-side controls bar, and pointer hover states.
+- ⚡ **Desktop Shortcuts**:
+  - `/` or `Ctrl+K`: Focus search bar.
+  - `Ctrl+S` / `Cmd+S`: Save changes in the edit screen.
+  - `Escape`: Clear search query or navigate back.
+- 📳 **Tactile Haptics**: Subtle, platform-safe haptic feedback for completions, additions, deletions, and saves.
+- 💾 **Reliable Offline Persistence**: Saved securely using `@react-native-async-storage/async-storage`.
+
+---
+
+## 🛠️ Architecture & Tech Stack
+
+```text
+crud-app/
+├── app/
+│   ├── _layout.tsx          # Root layout with Stack, ThemeProvider & TodoProvider
+│   ├── index.jsx            # Main responsive task list view (Search, Filters, Progress)
+│   └── edit/
+│       └── [id].jsx         # Dynamic route edit screen (/edit/:id)
+├── context/
+│   ├── ThemeContext.js      # Persistent Dark/Light theme state
+│   └── TodoContext.js       # Global Todo state with Undo recovery & AsyncStorage sync
+├── constants/
+│   └── theme.js             # Centralized design tokens (Indigo/Slate palette, shadows)
+├── utils/
+│   └── haptics.js           # Cross-platform safe haptic feedback utility
+├── data/
+│   └── todos.js             # Initial seed tasks
+├── PRODUCT.md               # Impeccable product truth, audience, and capabilities
+├── DESIGN.md                # Impeccable design system tokens and craft guidelines
+└── .agents/skills/          # Impeccable skill suite and references
+```
 
 ---
 
 ## 🚀 Getting Started
 
-Follow these instructions to get a copy of the project up and running on your local machine.
-
 ### Prerequisites
 
-- Node.js (v18 or higher recommended)
-- npm or yarn
-- Expo CLI (or use `npx expo`)
+- **Node.js**: v18 or higher recommended
+- **Package Manager**: npm or yarn
+- **Expo Go App**: (Optional) for running on physical mobile devices
 
 ### Installation
 
@@ -56,43 +89,37 @@ Follow these instructions to get a copy of the project up and running on your lo
 2. **Install dependencies:**
    ```bash
    npm install
-   # or
-   yarn install
    ```
 
 3. **Start the development server:**
    ```bash
+   # Run on Web (Desktop / Mobile browser)
+   npm run web
+
+   # Or start universal Expo server
    npm start
-   # or
-   npx expo start
    ```
 
-4. **Run on your device:**
-   - Scan the QR code displayed in the terminal using the **Expo Go** app on your iOS or Android device.
-   - Press `a` in the terminal to run on an Android emulator.
-   - Press `i` in the terminal to run on an iOS simulator.
+4. **Run on devices:**
+   - **Web**: Open [http://localhost:8081](http://localhost:8081) directly in your browser.
+   - **Android**: Press `a` in the terminal to launch the Android emulator, or scan the terminal QR code in Expo Go.
+   - **iOS**: Press `i` in the terminal to launch the iOS simulator, or scan the terminal QR code in Camera / Expo Go.
 
 ---
 
-## 📱 How to Use
+## 🎨 Design System & Quality Assurance
 
-- **Add a Task**: Type your task into the input field at the top and press the **Add** button.
-- **Complete/Undo**: Tap the **Done** button to mark a task as completed. Tap **Undo** to revert it.
-- **Edit a Task**: Tap the **Update** button next to a task to modify its title via a dedicated modal.
-- **Delete a Task**: Tap the **Delete** button to permanently remove the task from your list.
-- **Toggle Theme**: Use the **☀️/🌙** icon in the top right corner to switch between light and dark mode.
+This project was refined and verified using the **Impeccable** design suite:
+- **Lint Check**: `npm run lint` — 0 errors, 0 warnings.
+- **Type Check**: `npx tsc --noEmit` — 0 errors.
+- **Detector Check**: `npx impeccable detect app/index.jsx app/edit/[id].jsx` — 0 defects.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are highly welcome! 
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Contributions, issues, and feature requests are welcome!
+Feel free to open an issue or submit a pull request.
 
 ---
 

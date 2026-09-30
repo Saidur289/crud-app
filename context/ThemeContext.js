@@ -1,6 +1,7 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useMemo } from 'react';
 import { useColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { PALETTE } from '../constants/theme';
 
 export const ThemeContext = createContext();
 
@@ -33,13 +34,13 @@ export const ThemeProvider = ({ children }) => {
   };
 
   const isDarkMode = theme === 'dark';
+  const colors = useMemo(() => (isDarkMode ? PALETTE.dark : PALETTE.light), [isDarkMode]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, isDarkMode }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, isDarkMode, colors }}>
       {children}
     </ThemeContext.Provider>
   );
 };
 
 export const useTheme = () => useContext(ThemeContext);
-
