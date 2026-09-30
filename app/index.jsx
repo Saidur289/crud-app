@@ -604,7 +604,6 @@ const getStyles = (COLORS, { isCompact, isWide }) =>
       flex: 1,
       width: "100%",
       maxWidth: isWide ? 480 : undefined,
-      alignSelf: isWide ? "flex-start" : "stretch",
       paddingHorizontal: isCompact ? 12 : isWide ? 16 : 20,
     },
     detailPane: {
