@@ -34,12 +34,12 @@ The interface adheres to the **[Impeccable Design System](https://impeccable.sty
 - 📊 **Progress Tracker**: Visual progress card showing live task completion ratios and percentage track.
 - 🌓 **Adaptive Theming**: Seamless dark and light modes with automatic system detection, persistent user storage, and synchronized `<StatusBar>`.
 - 📱 **Fully Responsive Layout**:
-  - **Phones**: Single-column thumb-friendly layout with $\ge 44 \times 44\text{ pt}$ touch targets.
-  - **Tablets & Desktop**: Auto-centered reading container (`maxWidth: 760`), side-by-side controls bar, and pointer hover states.
+  - **Phones**: Single-column thumb-friendly layout with $\ge 44 \times 44\text{ pt}$ touch targets. Fallback to stacked navigation for edit screens.
+  - **Tablets & Desktop**: Auto-centered split-pane master-detail view (`maxWidth: 1200`), side-by-side controls bar, and pointer hover states. Allows opening task details side-by-side with the list.
 - ⚡ **Desktop Shortcuts**:
   - `/` or `Ctrl+K`: Focus search bar.
   - `Ctrl+S` / `Cmd+S`: Save changes in the edit screen.
-  - `Escape`: Clear search query or navigate back.
+  - `Escape`: Clear search query or dismiss detail pane/navigate back.
 - 📳 **Tactile Haptics**: Subtle, platform-safe haptic feedback for completions, additions, deletions, and saves.
 - 💾 **Reliable Offline Persistence**: Saved securely using `@react-native-async-storage/async-storage`.
 
@@ -51,9 +51,11 @@ The interface adheres to the **[Impeccable Design System](https://impeccable.sty
 crud-app/
 ├── app/
 │   ├── _layout.tsx          # Root layout with Stack, ThemeProvider & TodoProvider
-│   ├── index.jsx            # Main responsive task list view (Search, Filters, Progress)
+│   ├── index.jsx            # Main responsive task list view (Search, Filters, Progress, Split View)
 │   └── edit/
-│       └── [id].jsx         # Dynamic route edit screen (/edit/:id)
+│       └── [id].jsx         # Dynamic route edit screen for phones
+├── components/
+│   └── EditTaskPane.jsx     # Reusable task editor for split-pane and standalone routes
 ├── context/
 │   ├── ThemeContext.js      # Persistent Dark/Light theme state
 │   └── TodoContext.js       # Global Todo state with Undo recovery & AsyncStorage sync

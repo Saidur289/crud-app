@@ -24,6 +24,7 @@ import { useTheme } from "../context/ThemeContext";
 import { useTodos } from "../context/TodoContext";
 import { triggerHaptic } from "../utils/haptics";
 import { SHADOWS } from "../constants/theme";
+import EditTaskPane from "../components/EditTaskPane";
 
 const webPointer = Platform.select({
   web: { cursor: "pointer" },
@@ -35,14 +36,13 @@ export default function Index() {
   const [searchQuery, setSearchQuery] = useState("");
   const [toast, setToast] = useState(null);
   const [filter, setFilter] = useState("All");
+  const [selectedTodoId, setSelectedTodoId] = useState(null);
 
   const searchInputRef = useRef(null);
   const addInputRef = useRef(null);
 
   const { width } = useWindowDimensions();
   const isCompact = width < 420;
-  const isTablet = width >= 768 && width < 1024;
-  const isDesktop = width >= 1024;
   const isWide = width >= 768;
 
   const router = useRouter();
@@ -127,6 +127,7 @@ export default function Index() {
   const handleDeleteTodo = (id) => {
     triggerHaptic("warning");
     deleteTodo(id);
+    if (selectedTodoId === id) setSelectedTodoId(null);
     showToast("Task deleted", true);
   };
 
@@ -162,8 +163,8 @@ export default function Index() {
   };
 
   const styles = useMemo(
-    () => getStyles(colors, { isCompact, isTablet, isDesktop, isWide }),
-    [colors, isCompact, isTablet, isDesktop, isWide]
+    () => getStyles(colors, { isCompact, isWide }),
+    [colors, isCompact, isWide]
   );
 
   const formattedDate = useMemo(() => {
@@ -171,12 +172,14 @@ export default function Index() {
     return new Date().toLocaleDateString("en-US", options);
   }, []);
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }) => {
+    const isSelected = isWide && selectedTodoId === item.id;
+    return (
     <Animated.View
       entering={FadeInUp.duration(260)}
       exiting={FadeOutDown.duration(200)}
       layout={LinearTransition.duration(240)}
-      style={styles.todoItem}
+      style={[styles.todoItem, isSelected && styles.todoItemSelected]}
     >
       {/* Checkbox */}
       <Pressable
@@ -226,7 +229,11 @@ export default function Index() {
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           onPress={() => {
             triggerHaptic("light");
-            router.push(`/edit/${item.id}`);
+            if (isWide) {
+              setSelectedTodoId(item.id);
+            } else {
+              router.push(`/edit/${item.id}`);
+            }
           }}
         >
           <Ionicons name="pencil-outline" size={isCompact ? 15 : 17} color={colors.primary} />
@@ -250,6 +257,7 @@ export default function Index() {
       </View>
     </Animated.View>
   );
+  };
 
   if (!isLoaded) {
     return (
@@ -261,7 +269,9 @@ export default function Index() {
 
   return (
     <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-      <View style={styles.responsiveShell}>
+      <View style={[styles.mainLayout, isWide && styles.mainLayoutWide]}>
+        {/* Left List Pane */}
+        <View style={styles.responsiveShell}>
         {/* Header */}
         <View style={styles.header}>
           <View>
@@ -323,9 +333,9 @@ export default function Index() {
         )}
 
         {/* Adaptive Controls: Quick Add & Search */}
-        <View style={[styles.controlsGroup, isWide && styles.controlsGroupWide]}>
+        <View style={styles.controlsGroup}>
           {/* Add Input Bar */}
-          <View style={[styles.inputContainer, isWide && styles.controlItemWide]}>
+          <View style={styles.inputContainer}>
             <TextInput
               ref={addInputRef}
               style={styles.input}
@@ -363,7 +373,7 @@ export default function Index() {
           </View>
 
           {/* Search Bar */}
-          <View style={[styles.searchContainer, isWide && styles.controlItemWide]}>
+          <View style={styles.searchContainer}>
             <Ionicons
               name="search-outline"
               size={18}
@@ -375,7 +385,7 @@ export default function Index() {
               style={styles.searchInput}
               value={searchQuery}
               onChangeText={setSearchQuery}
-              placeholder={isWide ? "Search tasks... (Press / to focus)" : "Search tasks..."}
+              placeholder="Search tasks..."
               placeholderTextColor={colors.textMuted}
             />
             {isWide && !searchQuery && (
@@ -523,6 +533,22 @@ export default function Index() {
             showsVerticalScrollIndicator={false}
           />
         )}
+        </View>
+
+        {/* Right Detail Pane (Only on Wide Screens) */}
+        {isWide && (
+          <View style={styles.detailPane}>
+            {selectedTodoId ? (
+              <EditTaskPane id={selectedTodoId} onClose={() => setSelectedTodoId(null)} />
+            ) : (
+              <View style={styles.emptyDetailContainer}>
+                <Ionicons name="document-text-outline" size={48} color={colors.textMuted} style={{opacity: 0.5}} />
+                <Text style={styles.emptyDetailTitle}>No Task Selected</Text>
+                <Text style={styles.emptyDetailSubtext}>Select a task from the list to edit its details.</Text>
+              </View>
+            )}
+          </View>
+        )}
       </View>
 
       {/* Floating Toast Notification */}
@@ -551,7 +577,7 @@ export default function Index() {
   );
 }
 
-const getStyles = (COLORS, { isCompact, isTablet, isDesktop, isWide }) =>
+const getStyles = (COLORS, { isCompact, isWide }) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -561,13 +587,54 @@ const getStyles = (COLORS, { isCompact, isTablet, isDesktop, isWide }) =>
       justifyContent: "center",
       alignItems: "center",
     },
+    mainLayout: {
+      flex: 1,
+      width: "100%",
+    },
+    mainLayoutWide: {
+      flexDirection: "row",
+      maxWidth: 1200,
+      alignSelf: "center",
+      gap: 24,
+      paddingHorizontal: 24,
+      paddingTop: 12,
+    },
     // Responsive Shell
     responsiveShell: {
       flex: 1,
       width: "100%",
-      maxWidth: isWide ? 760 : undefined,
-      alignSelf: isWide ? "center" : "stretch",
-      paddingHorizontal: isCompact ? 12 : 20,
+      maxWidth: isWide ? 480 : undefined,
+      alignSelf: isWide ? "flex-start" : "stretch",
+      paddingHorizontal: isCompact ? 12 : isWide ? 16 : 20,
+    },
+    detailPane: {
+      flex: 1.2,
+      backgroundColor: COLORS.surface,
+      borderRadius: 20,
+      borderWidth: 1,
+      borderColor: COLORS.borderColor,
+      ...SHADOWS.elevated,
+      marginTop: 12,
+      marginBottom: 12,
+      paddingHorizontal: 16,
+    },
+    emptyDetailContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 32,
+    },
+    emptyDetailTitle: {
+      fontSize: 18,
+      fontWeight: "600",
+      color: COLORS.text,
+      marginTop: 16,
+      marginBottom: 8,
+    },
+    emptyDetailSubtext: {
+      fontSize: 14,
+      color: COLORS.textMuted,
+      textAlign: "center",
     },
     // Header
     header: {
@@ -586,7 +653,7 @@ const getStyles = (COLORS, { isCompact, isTablet, isDesktop, isWide }) =>
       marginBottom: 2,
     },
     headerTitle: {
-      fontSize: isCompact ? 24 : isWide ? 32 : 28,
+      fontSize: isCompact ? 24 : isWide ? 26 : 28,
       fontWeight: "700",
       letterSpacing: -0.5,
       color: COLORS.text,
@@ -660,18 +727,10 @@ const getStyles = (COLORS, { isCompact, isTablet, isDesktop, isWide }) =>
     progressBarComplete: {
       backgroundColor: COLORS.success,
     },
-    // Responsive Controls Group
+    // Controls Group
     controlsGroup: {
       marginBottom: 12,
       gap: 10,
-    },
-    controlsGroupWide: {
-      flexDirection: "row",
-      gap: 12,
-    },
-    controlItemWide: {
-      flex: 1,
-      marginBottom: 0,
     },
     // Input Area
     inputContainer: {
@@ -848,6 +907,10 @@ const getStyles = (COLORS, { isCompact, isTablet, isDesktop, isWide }) =>
       borderColor: COLORS.borderColor,
       ...SHADOWS.card,
     },
+    todoItemSelected: {
+      borderColor: COLORS.primary,
+      backgroundColor: COLORS.primarySurface,
+    },
     checkboxContainer: {
       marginRight: isCompact ? 10 : 12,
       padding: 2,
@@ -931,6 +994,11 @@ const getStyles = (COLORS, { isCompact, isTablet, isDesktop, isWide }) =>
       paddingHorizontal: 16,
       borderRadius: 8,
       backgroundColor: COLORS.primarySurface,
+    },
+    emptyStateActionText: {
+      fontSize: 14,
+      fontWeight: "600",
+      color: COLORS.primary,
     },
     emptyStateActionBtnHovered: {
       backgroundColor: COLORS.primaryLight + "30",
