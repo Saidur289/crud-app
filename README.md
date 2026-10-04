@@ -42,6 +42,9 @@ The interface adheres to the **[Impeccable Design System](https://impeccable.sty
   - `Escape`: Clear search query or dismiss detail pane/navigate back.
 - 📳 **Tactile Haptics**: Subtle, platform-safe haptic feedback for completions, additions, deletions, and saves.
 - 💾 **Reliable Offline Persistence**: Saved securely using `@react-native-async-storage/async-storage`.
+- 🌐 **Additional Pages**:
+  - **About Us (`/about`)**: Beautifully designed responsive "About Us" page with interactive image grid placeholders.
+  - **Contact (`/contact`)**: Quick and simple contact form route.
 
 ---
 
@@ -52,6 +55,8 @@ crud-app/
 ├── app/
 │   ├── _layout.tsx          # Root layout with Stack, ThemeProvider & TodoProvider
 │   ├── index.jsx            # Main responsive task list view (Search, Filters, Progress, Split View)
+│   ├── about.jsx            # About Us page with responsive image grid
+│   ├── contact.jsx          # Contact page 
 │   └── edit/
 │       └── [id].jsx         # Dynamic route edit screen for phones
 ├── components/
